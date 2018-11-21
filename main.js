@@ -1,6 +1,7 @@
 console.log('In main.js');
 VK.init({
-    apiId: 6759151
+    // apiId: 6759151
+    apiId: 6759177
 });
 
 function auth() {

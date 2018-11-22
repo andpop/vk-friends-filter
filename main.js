@@ -30,38 +30,56 @@ function callAPI(method, params) {
     })
 }
 
-async function loadFriends() {
-    await auth();
-    const [me] = await callAPI('users.get', { name_case: 'gen'});
-    const friends = await callAPI('friends.get', { fields: 'city, country, photo_100'});
-
-    const template = document.querySelector('#friends_template').textContent;
-    const render = Handlebars.compile(template);
-    const html = render(friends);
-
-    const result = document.querySelector('#all_friends');
-    result.innerHTML = html;
+function saveFriendsToLocalStorage(friendsObj) {
+    localStorage.friends = JSON.stringify(friendsObj);
 }
 
-loadFriends();
+function loadFriendsFromLocalStorage() {
+    let data = {};
 
-// auth()
-//     .then(() => {
-//
-//         return callAPI('users.get', { name_case: 'gen'});
-//     })
-//     .then(([me]) => {
-//         console.log(me);
-//
-//         return callAPI('friends.get', { fields: 'city, country, photo_100'});
-//     })
-//     .then(friends => {
-//         const template = document.querySelector('#friends_template').textContent;
-//         console.log(template);
-//         const render = Handlebars.compile(template);
-//         const html = render(friends);
-//         console.log(html);
-//         const result = document.querySelector('#all_friends');
-//
-//         result.innerHTML = html;
-//     });
+    if (localStorage.friends) {
+        data = JSON.parse(localStorage.friends);
+    }
+
+    return data;
+}
+
+//Добавление в friendsObj данными о друзьях из ВК
+async function addFriendsFromVK(friendsObj) {
+    try {
+        await auth();
+        const friends = await callAPI('friends.get', { fields: 'photo_50'});
+
+        for (const item of friends.items) {
+            if (friendsObj.hasOwnProperty(item.id)) {
+                // Если информация о друге уже была сохранена локально, то обновляем ее из ВК
+                friendsObj[item.id].first_name = item.first_name;
+                friendsObj[item.id].last_name = item.last_name;
+                friendsObj[item.id].photo = item.photo_50;
+            } else {
+                // Если локальной информации о друге не было, то добавляем ее
+                friendsObj[item.id] = {
+                    first_name: item.first_name,
+                    last_name: item.last_name,
+                    photo: item.photo_50,
+                    selected: false
+                };
+            }
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+let allFriends = loadFriendsFromLocalStorage();
+
+(async () => {
+    await addFriendsFromVK(allFriends);
+
+    let unselectedFriends = getUnselectedFriends(allFriends);
+    let selectedFriends = getSelectedFriends(allFriends);
+
+    saveFriendsToLocalStorage(allFriends);
+
+})();
+

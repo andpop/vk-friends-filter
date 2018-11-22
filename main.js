@@ -16,5 +16,52 @@ function auth() {
     });
 }
 
-auth().then(() => console.log('Authorization ok.'));
-// console.log(VK);
+function callAPI(method, params) {
+    params.v = '5.92';
+
+    return new Promise((resolve, reject) => {
+        VK.api(method, params, (data) => {
+            if (data.error) {
+                reject(data.error);
+            } else {
+                resolve(data.response);
+            }
+        });
+    })
+}
+
+async function loadFriends() {
+    await auth();
+    const [me] = await callAPI('users.get', { name_case: 'gen'});
+    const friends = await callAPI('friends.get', { fields: 'city, country, photo_100'});
+
+    const template = document.querySelector('#friends_template').textContent;
+    const render = Handlebars.compile(template);
+    const html = render(friends);
+
+    const result = document.querySelector('#all_friends');
+    result.innerHTML = html;
+}
+
+loadFriends();
+
+// auth()
+//     .then(() => {
+//
+//         return callAPI('users.get', { name_case: 'gen'});
+//     })
+//     .then(([me]) => {
+//         console.log(me);
+//
+//         return callAPI('friends.get', { fields: 'city, country, photo_100'});
+//     })
+//     .then(friends => {
+//         const template = document.querySelector('#friends_template').textContent;
+//         console.log(template);
+//         const render = Handlebars.compile(template);
+//         const html = render(friends);
+//         console.log(html);
+//         const result = document.querySelector('#all_friends');
+//
+//         result.innerHTML = html;
+//     });

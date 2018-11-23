@@ -2,24 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>VK friends filter</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
     <script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/style.css">
+
 </head>
 <body>
-    <div class="container">
-        <div id="all_friends"></div>
+    <div class="wrapper">
+        <div class="container">
+            <div id="unselected_friends" class="panel panel--left">
+                <ul class="friends-list">
+                    <li class="friends-item">
+                        <img src="" alt="Фото" class="photo">
+                        <span>Иван Петров</span>
+                        <a href="#">+</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="selected_friends" class="panel panel--right"></div>
+
+        </div>
 
     </div>
-    <script id="friends_template" type="text/x-handlebars-template">
-        <div class="friends">
+    <script id="friend_template" type="text/x-handlebars-template">
+        <ul class="friends-list">
             {{#each items}}
-            <div class="friend">
-                <img src="{{photo_50}}" alt="">
-                <div>{{first_name}} {{last_name}}</div>
-            </div>
+            <li class="friends-item">
+                <img src="{{photo}}" alt="Фото" class="photo">
+                <span>{{firstName}} {{lastName}}</span>
+                <a href="#" id="toggleStatus">+</a>
+            </li>
             {{/each}}
-        </div>
+        </ul>
     </script>
 
     <!--<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->

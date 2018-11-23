@@ -92,6 +92,23 @@ function displayFriends() {
     displaySelectedFriends();
 }
 
+function addDrugAndDropListeners() {
+    unselectedList.addEventListener('dragstart', e => {
+        event.dataTransfer.setData('id', e.target.dataset.friend_id);
+    });
+
+// Делаем контейнер способным принять перемещаемые объекты
+    selectedContainer.addEventListener('dragover', e => {
+        e.preventDefault();
+    });
+
+    selectedContainer.addEventListener('drop', e => {
+        const id = event.dataTransfer.getData('id');
+
+        toggleFriendStatus(allFriends, id);
+        displayFriends();
+    });
+}
 //------------------------------------------------------------------------------------
 
 const
@@ -100,21 +117,7 @@ const
     unselectedList = document.querySelector('#unselected-list'),
     saveButton = document.querySelector('#save');
 
-unselectedList.addEventListener('dragstart', e => {
-    event.dataTransfer.setData('id', e.target.dataset.friend_id);
-});
-
-// Делаем контейнер способным принять перемещаемые объекты
-selectedContainer.addEventListener('dragover', e => {
-    e.preventDefault();
-});
-
-selectedContainer.addEventListener('drop', e => {
-    const id = event.dataTransfer.getData('id');
-
-    toggleFriendStatus(allFriends, id);
-    displayFriends();
-});
+addDrugAndDropListeners();
 
 const friendTemplate = document.querySelector('#friend_template').textContent;
 const render = Handlebars.compile(friendTemplate);
@@ -134,7 +137,5 @@ VK.init({
 (async () => {
     await addFriendsFromVK(allFriends);
     displayFriends();
-
-    // saveFriendsToLocalStorage(allFriends);
 })();
 

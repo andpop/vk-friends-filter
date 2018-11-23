@@ -27,7 +27,8 @@
         <li class="friends-item" draggable="true" data-friend_id="{{id}}">
             <img src="{{photo}}" alt="Фото" class="photo" draggable="false">
             <span draggable="false">{{firstName}} {{lastName}}</span>
-            <a href="#" id="toggleStatus" draggable="false">+</a>
+            <a href="#" id="toggle-status" class="toggle-status" draggable="false">
+            {{#if selected}}-{{else}}+{{/if}}</a>
         </li>
         {{/each}}
     </script>

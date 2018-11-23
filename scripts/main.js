@@ -97,7 +97,8 @@ function displayFriends() {
 const
     selectedContainer = document.querySelector('#selected-container'),
     selectedList = document.querySelector('#selected-list'),
-    unselectedList = document.querySelector('#unselected-list');
+    unselectedList = document.querySelector('#unselected-list'),
+    saveButton = document.querySelector('#save');
 
 unselectedList.addEventListener('dragstart', e => {
     event.dataTransfer.setData('id', e.target.dataset.friend_id);
@@ -119,6 +120,11 @@ const friendTemplate = document.querySelector('#friend_template').textContent;
 const render = Handlebars.compile(friendTemplate);
 
 let allFriends = loadFriendsFromLocalStorage();
+
+saveButton.addEventListener('click', e => {
+    console.log('save');
+    saveFriendsToLocalStorage(allFriends);
+});
 
 VK.init({
     // apiId: 6759151

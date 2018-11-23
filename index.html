@@ -13,33 +13,27 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div id="unselected_friends" class="panel panel--left">
-                <ul class="friends-list">
-                    <li class="friends-item">
-                        <img src="" alt="Фото" class="photo">
-                        <span>Иван Петров</span>
-                        <a href="#">+</a>
-                    </li>
-                </ul>
+            <div id="unselected-container" class="panel panel--left">
+                <ul class="friends-list" id="unselected-list"></ul>
             </div>
-            <div id="selected_friends" class="panel panel--right"></div>
-
+            <div id="selected-container" class="panel panel--right">
+                <ul class="friends-list" id="selected-list"></ul>
+            </div>
         </div>
 
     </div>
     <script id="friend_template" type="text/x-handlebars-template">
-        <ul class="friends-list">
-            {{#each items}}
-            <li class="friends-item">
-                <img src="{{photo}}" alt="Фото" class="photo">
-                <span>{{firstName}} {{lastName}}</span>
-                <a href="#" id="toggleStatus">+</a>
-            </li>
-            {{/each}}
-        </ul>
+        {{#each items}}
+        <li class="friends-item" draggable="true" data-friend_id="{{id}}">
+            <img src="{{photo}}" alt="Фото" class="photo" draggable="false">
+            <span draggable="false">{{firstName}} {{lastName}}</span>
+            <a href="#" id="toggleStatus" draggable="false">+</a>
+        </li>
+        {{/each}}
     </script>
 
     <!--<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
-    <script src="main.js"></script>
+    <script src="scripts/vk_utils.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>

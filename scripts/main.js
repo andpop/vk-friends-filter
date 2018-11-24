@@ -1,10 +1,35 @@
+function auth() {
+    return new Promise((resolve, reject) => {
+        VK.Auth.login(data => {
+            if (data.session) {
+                resolve();
+            } else {
+                reject(new Error('Ошибка при авторизации'));
+            }
+        }, 2);
+    });
+}
+
+function callAPI(method, params) {
+    params.v = '5.92';
+
+    return new Promise((resolve, reject) => {
+        VK.api(method, params, (data) => {
+            if (data.error) {
+                reject(data.error);
+            } else {
+                resolve(data.response);
+            }
+        });
+    })
+}
+
 //Заполнение friendsObj данными о друзьях из ВК
 async function addFriendsFromVK(friendsObj) {
     try {
         await auth();
         const friends = await callAPI('friends.get', { fields: 'photo_50'});
 
-        // console.log(friends);
         for (const item of friends.items) {
             if (friendsObj.hasOwnProperty(item.id)) {
                 // Если информация о друге уже была сохранена локально, то обновляем ее из ВК
@@ -63,18 +88,40 @@ function getAllFriendsForHB(friendsObj) {
     return { items: friendsForHB };
 }
 
-//Невыбранные друзья (левая панель) в формате для Handlebars
+//Невыбранные друзья (левая панель) в формате для Handlebars (с учетом фильтра)
 function getUnselectedFriends(friendsObj) {
+    const filter = unselectedFilter.value.trim();
     const allFriendsArray = getAllFriendsForHB(friendsObj).items;
 
-    return { items: allFriendsArray.filter(item => !item.selected) };
+    return {
+        items: allFriendsArray.filter(item => {
+            let isFriendMatched = !item.selected;
+
+            if (filter !=='') {
+                isFriendMatched = isFriendMatched && isMatching(`${item.firstName} ${item.lastName}`, filter);
+            }
+
+            return isFriendMatched;
+            })
+    };
 }
 
-//Выбранные друзья (правая панель) в формате для Handlebars
+//Выбранные друзья (правая панель) в формате для Handlebars (с учетом фильтра)
 function getSelectedFriends(friendsObj) {
+    const filter = selectedFilter.value.trim();
     const allFriendsArray = getAllFriendsForHB(friendsObj).items;
 
-    return { items: allFriendsArray.filter(item => item.selected) };
+    return {
+        items: allFriendsArray.filter(item => {
+            let isFriendMatched = item.selected;
+
+            if (filter !=='') {
+                isFriendMatched = isFriendMatched && isMatching(`${item.firstName} ${item.lastName}`, filter);
+            }
+
+            return isFriendMatched;
+        })
+    };
 }
 
 function displayUnselectedFriends() {
@@ -113,7 +160,6 @@ function addDrugAndDropListeners() {
 function toggleStatusHandler(e) {
     if (e.target.tagName === 'BUTTON') {
         const id = e.target.dataset.friend_id;
-        console.log(id);
 
         toggleFriendStatus(allFriends, id);
         displayFriends();
@@ -124,34 +170,62 @@ function addToggleStatusListeners() {
     unselectedList.addEventListener('click', toggleStatusHandler);
     selectedList.addEventListener('click', toggleStatusHandler);
 }
+
+function addFilterListeners() {
+    unselectedFilter.addEventListener('keyup', function () {
+        // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+        displayUnselectedFriends();
+    });
+
+    selectedFilter.addEventListener('keyup', function () {
+        // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+        displaySelectedFriends();
+    });
+
+}
+
+function addListeners() {
+    addDrugAndDropListeners();
+    addToggleStatusListeners();
+    addFilterListeners();
+    saveButton.addEventListener('click', e => {
+        saveFriendsToLocalStorage(allFriends);
+    });
+
+}
+
+function compileHandlebarsTemplate() {
+    const friendTemplate = document.querySelector('#friend_template').textContent;
+
+    return Handlebars.compile(friendTemplate);
+}
+
 //------------------------------------------------------------------------------------
 
-const
+let
+    selectedFilter = document.querySelector('#selected-filter'),
+    unselectedFilter = document.querySelector('#unselected-filter'),
     selectedContainer = document.querySelector('#selected-container'),
     selectedList = document.querySelector('#selected-list'),
     unselectedList = document.querySelector('#unselected-list'),
     saveButton = document.querySelector('#save');
 
-addDrugAndDropListeners();
-addToggleStatusListeners();
+//Функция для рендеринга списка друзей (через шаблон Handlebars)
+const render = compileHandlebarsTemplate();
 
-const friendTemplate = document.querySelector('#friend_template').textContent;
-const render = Handlebars.compile(friendTemplate);
-
+//Создаем объект с друзьями, сохраненными в local storage
 let allFriends = loadFriendsFromLocalStorage();
 
-saveButton.addEventListener('click', e => {
-    console.log('save');
-    saveFriendsToLocalStorage(allFriends);
-});
+addListeners();
 
 VK.init({
-    // apiId: 6759151
     apiId: 6759177
 });
 
 (async () => {
+    //Добавляем в объект с друзьями записи о друзьях из ВК
     await addFriendsFromVK(allFriends);
+
     displayFriends();
 })();
 

@@ -13,14 +13,19 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <div id="unselected-container" class="panel panel--left">
-                <ul class="friends-list" id="unselected-list"></ul>
+            <input type="text" id="unselected-filter">
+            <input type="text" id="selected-filter">
+            <div class="friends-container">
+                <div id="unselected-container" class="panel panel--left">
+                    <ul class="friends-list" id="unselected-list"></ul>
+                </div>
+                <div id="selected-container" class="panel panel--right">
+                    <ul class="friends-list" id="selected-list"></ul>
+                </div>
             </div>
-            <div id="selected-container" class="panel panel--right">
-                <ul class="friends-list" id="selected-list"></ul>
-            </div>
+            <button id="save">Сохранить</button>
         </div>
-        <button id="save">Сохранить</button>
+
     </div>
     <script id="friend_template" type="text/x-handlebars-template">
         {{#each items}}
@@ -34,7 +39,8 @@
     </script>
 
     <!--<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
-    <script src="scripts/vk_utils.js"></script>
+    <!--<script src="scripts/vk_utils.js"></script>-->
+    <script src="scripts/utils.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 </html>

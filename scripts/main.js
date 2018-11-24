@@ -94,7 +94,7 @@ function displayFriends() {
 
 function addDrugAndDropListeners() {
     unselectedList.addEventListener('dragstart', e => {
-        event.dataTransfer.setData('id', e.target.dataset.friend_id);
+        e.dataTransfer.setData('id', e.target.dataset.friend_id);
     });
 
 // Делаем контейнер способным принять перемещаемые объекты
@@ -103,11 +103,26 @@ function addDrugAndDropListeners() {
     });
 
     selectedContainer.addEventListener('drop', e => {
-        const id = event.dataTransfer.getData('id');
+        const id = e.dataTransfer.getData('id');
 
         toggleFriendStatus(allFriends, id);
         displayFriends();
     });
+}
+
+function toggleStatusHandler(e) {
+    if (e.target.tagName === 'BUTTON') {
+        const id = e.target.dataset.friend_id;
+        console.log(id);
+
+        toggleFriendStatus(allFriends, id);
+        displayFriends();
+    }
+}
+
+function addToggleStatusListeners() {
+    unselectedList.addEventListener('click', toggleStatusHandler);
+    selectedList.addEventListener('click', toggleStatusHandler);
 }
 //------------------------------------------------------------------------------------
 
@@ -118,6 +133,7 @@ const
     saveButton = document.querySelector('#save');
 
 addDrugAndDropListeners();
+addToggleStatusListeners();
 
 const friendTemplate = document.querySelector('#friend_template').textContent;
 const render = Handlebars.compile(friendTemplate);

@@ -158,7 +158,7 @@ function addDrugAndDropListeners() {
 }
 
 function toggleStatusHandler(e) {
-    if (e.target.tagName === 'BUTTON') {
+    if (e.target.tagName === 'IMG') {
         const id = e.target.dataset.friend_id;
 
         toggleFriendStatus(allFriends, id);
@@ -191,7 +191,7 @@ function addListeners() {
     saveButton.addEventListener('click', e => {
         saveFriendsToLocalStorage(allFriends);
     });
-
+    closeButton.addEventListener('click', e => window.close());
 }
 
 function compileHandlebarsTemplate() {
@@ -208,7 +208,8 @@ let
     selectedContainer = document.querySelector('#selected-container'),
     selectedList = document.querySelector('#selected-list'),
     unselectedList = document.querySelector('#unselected-list'),
-    saveButton = document.querySelector('#save');
+    saveButton = document.querySelector('#save'),
+    closeButton = document.querySelector('#close');
 
 //Функция для рендеринга списка друзей (через шаблон Handlebars)
 const render = compileHandlebarsTemplate();
@@ -219,7 +220,8 @@ let allFriends = loadFriendsFromLocalStorage();
 addListeners();
 
 VK.init({
-    apiId: 6759177
+    // apiId: 6759177
+    apiId: 6762696
 });
 
 (async () => {

@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
     <script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/normalize.css">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/style.css">
@@ -17,37 +18,53 @@
             <div class="header">
                 <div class="header__title">Выберите друзей</div>
                 <div class="header__close">
-                    <a href="#"><img src="images/close.png" alt="Close"></a>
+                    <a href="#" id="close"><img src="images/close.png" alt="Close"></a>
                 </div>
+            </div>
+            <div class="filter-bar">
+                <span class="filter__icon filter__icon--left"><i class="fa fa-search fa-fw"></i></span>
+                <input type="text" id="unselected-filter" class="filter__input filter__input--left" placeholder="Имя друга">
+                <span class="filter__icon filter__icon--right"><i class="fa fa-search fa-fw"></i></span>
+                <input type="text" id="selected-filter" class="filter__input filter__input--right" placeholder="Имя друга">
             </div>
 
-            <input type="text" id="unselected-filter">
-            <input type="text" id="selected-filter">
-            <div class="friends-container">
+            <div class="friends__container">
                 <div id="unselected-container" class="panel panel--left">
-                    <ul class="friends-list" id="unselected-list"></ul>
+                    <h1 class="friends__title">Ваши друзья</h1>
+                    <ul class="friends__list" id="unselected-list"></ul>
                 </div>
                 <div id="selected-container" class="panel panel--right">
-                    <ul class="friends-list" id="selected-list"></ul>
+                    <h1 class="friends__title">Друзья в списке</h1>
+                    <ul class="friends__list" id="selected-list"></ul>
                 </div>
             </div>
-            <button id="save">Сохранить</button>
+            <div class="footer">
+                <button id="save" class="button-save">Сохранить</button>
+            </div>
         </div>
 
     </div>
     <script id="friend_template" type="text/x-handlebars-template">
         {{#each items}}
-        <li class="friends-item" draggable="true" data-friend_id="{{id}}">
-            <img src="{{photo}}" alt="Фото" class="photo" draggable="false">
-            <span draggable="false">{{firstName}} {{lastName}}</span>
-            <button id="toggle-status" class="toggle-status" data-friend_id="{{id}}" draggable="false">
-            {{#if selected}}-{{else}}+{{/if}}</button>
+        {{#if selected}}
+        <li class="friends__item" draggable="false" data-friend_id="{{id}}">
+        {{else}}
+        <li class="friends__item" draggable="true" data-friend_id="{{id}}">
+        {{/if}}
+            <div class="friend__info">
+                <img src="{{photo}}" alt="Фото" class="photo" draggable="false">
+                <span draggable="false">{{firstName}} {{lastName}}</span>
+            </div>
+            {{#if selected}}
+                <img src="images/x.png" alt="Переместить" class="toggle-status" data-friend_id="{{id}}" draggable="false">
+            {{else}}
+                <img src="images/plus.png" alt="Переместить" class="toggle-status" data-friend_id="{{id}}" draggable="false">
+
+            {{/if}}
         </li>
         {{/each}}
     </script>
 
-    <!--<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>-->
-    <!--<script src="scripts/vk_utils.js"></script>-->
     <script src="scripts/utils.js"></script>
     <script src="scripts/main.js"></script>
 </body>

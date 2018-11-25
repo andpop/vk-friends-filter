@@ -18,22 +18,152 @@
 .header__close {
     padding-right: 15px;
 }
+
+.filter-bar {
+    width: 620px;
+    height: 45px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 45px;
+    position: relative;
+}
+
+.filter__icon {
+    position: absolute;
+    color: #9f9f9f;
+}
+
+.filter__icon--left {
+    left: 20px;
+}
+
+.filter__icon--right {
+    right: 275px;
+}
+
+.filter__input {
+    width: 285px;
+    height: 26px;
+    background-color: #ffffff;
+    font-size: 12px;
+    border: none;
+    border-radius: 10px;
+    padding-left: 25px;
+}
+
+.filter__input--left {
+    margin-left: 15px;
+}
+
+.filter__input--right {
+    margin-right: 15px;
+}
+
 .container {
     width: 620px;
     height: 490px;
-    border: 1px solid black;
     border-radius: 10px;
+    margin-top: 20px;
 }
 
-.friends-container {
+.friends__container {
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 355px;
+    background-color: #ffffff;
+    font-size: 12px;
+    /*border: 1px solid blue;*/
+}
+
+.friends__title {
+    color: #4f4f4f;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.friends__list {
+    margin-left: 15px;
 }
 
 .panel {
     width: 50%;
-    height: 80%;
-    border: 1px solid black;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+.panel--left {
+    border-right: 1px solid #f0f0f0;
+}
+
+.friends__item {
+    width: 97%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.friends__item:first-child {
+    border-top: 1px solid #f0f0f0;
+}
+
+.friends__item:hover {
+    background-color: #f0f0f0;
+}
+
+.friends__item:hover img {
+    background-color: #f0f0f0;
+}
+
+.photo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.friend__info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.toggle-status {
+    background-color: #fff;
+    margin-right: 10px;
+}
+
+.footer {
+    width: 100%;
+    height: 45px;
+    background-color: #f0f0f0;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.button-save {
+    width: 87px;
+    height: 30px;
+    background-color: #ff8663;
+    color: #fff;
+    margin-right: 7px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+/*::-webkit-scrollbar{*/
+    /*width: 12px;*/
+/*}*/

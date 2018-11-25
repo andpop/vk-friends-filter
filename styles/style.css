@@ -1,8 +1,28 @@
+.header {
+    width: 620px;
+    height: 45px;
+    background-color: #ff8663;
+    color: #ffffff;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 45px;
+    font-weight: 500;
+}
 
+.header__title {
+    padding-left: 15px;
+}
+
+.header__close {
+    padding-right: 15px;
+}
 .container {
-    width: 600px;
-    height: 600px;
+    width: 620px;
+    height: 490px;
     border: 1px solid black;
+    border-radius: 10px;
 }
 
 .friends-container {
@@ -13,7 +33,7 @@
 
 .panel {
     width: 50%;
-    height: 100%;
+    height: 80%;
     border: 1px solid black;
 }
 

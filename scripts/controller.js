@@ -33,7 +33,6 @@ window.Controller = {
         htmlElements.unselectedList.addEventListener('click', this.toggleStatusHandler);
         htmlElements.selectedList.addEventListener('click', this.toggleStatusHandler);
         // Фильтрация соответстующего списка при изменении текста в фильтре
-        // htmlElements.unselectedFilter.addEventListener('keyup', fn);
         htmlElements.unselectedFilter.addEventListener('keyup', () => View.displayUnselectedFriends());
         htmlElements.selectedFilter.addEventListener('keyup', () => View.displaySelectedFriends());
 

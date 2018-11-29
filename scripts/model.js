@@ -1,7 +1,7 @@
 const isMatching = require('./utils.js');
 
 module.exports = {
-    // allFriends: {},
+    allFriends: {}, //данные о всех друзьях, загруженных из LocalStorage и добавленных из ВК
     loginVK: (appId, permissions) => {
         VK.init({apiId: appId});
 
@@ -28,14 +28,15 @@ module.exports = {
             });
         })
     },
-    loadFriendsFromLocalStorage: () => {
+    loadFriendsFromLocalStorage() {
         this.allFriends = localStorage.friends ? JSON.parse(localStorage.friends) : {};
-        return localStorage.friends ? JSON.parse(localStorage.friends) : {}
+
+        return this.allFriends;
     },
-    saveFriendsToLocalStorage: (friendsObj) => {
-        localStorage.friends = JSON.stringify(friendsObj);
+    saveFriendsToLocalStorage() {
+        localStorage.friends = JSON.stringify(this.allFriends);
     },
-    async addFriendsFromVK(friendsObj) {
+    async addFriendsFromVK() {
         //Заполнение friendsObj данными о друзьях из ВК
         try {
             await
@@ -44,14 +45,14 @@ module.exports = {
                 this.callAPI('friends.get', {fields: 'photo_50'});
 
             for (const item of friends.items) {
-                if (friendsObj.hasOwnProperty(item.id)) {
+                if (this.allFriends.hasOwnProperty(item.id)) {
                     // Если информация о друге уже была сохранена локально, то обновляем ее из ВК
-                    friendsObj[item.id].firstName = item.first_name;
-                    friendsObj[item.id].lastName = item.last_name;
-                    friendsObj[item.id].photo = item.photo_50;
+                    this.allFriends[item.id].firstName = item.first_name;
+                    this.allFriends[item.id].lastName = item.last_name;
+                    this.allFriends[item.id].photo = item.photo_50;
                 } else {
                     // Если локальной информации о друге не было, то добавляем ее
-                    friendsObj[item.id] = {
+                    this.allFriends[item.id] = {
                         firstName: item.first_name,
                         lastName: item.last_name,
                         photo: item.photo_50,
@@ -64,17 +65,17 @@ module.exports = {
         }
     },
     // Все друзья в формате для Handlebars
-    getAllFriendsForHB(friendsObj) {
+    getAllFriendsForHB() {
         let friendsForHB = [];
 
-        for (let id in friendsObj) {
-            if (friendsObj.hasOwnProperty(id)) {
+        for (let id in this.allFriends) {
+            if (this.allFriends.hasOwnProperty(id)) {
                 friendsForHB.push({
                     id,
-                    firstName: friendsObj[id].firstName,
-                    lastName: friendsObj[id].lastName,
-                    photo: friendsObj[id].photo,
-                    selected: friendsObj[id].selected
+                    firstName: this.allFriends[id].firstName,
+                    lastName: this.allFriends[id].lastName,
+                    photo: this.allFriends[id].photo,
+                    selected: this.allFriends[id].selected
                 });
             }
         }
@@ -82,8 +83,8 @@ module.exports = {
         return {items: friendsForHB};
     },
     //Невыбранные друзья (левая панель) в формате для Handlebars (с учетом фильтра)
-    getUnselectedFriends(friendsObj, filter) {
-        const allFriendsArray = this.getAllFriendsForHB(friendsObj).items;
+    getUnselectedFriends(filter) {
+        const allFriendsArray = this.getAllFriendsForHB().items;
 
         return {
             items: allFriendsArray.filter(item => {
@@ -98,8 +99,8 @@ module.exports = {
         };
     },
     //Выбранные друзья (правая панель) в формате для Handlebars (с учетом фильтра)
-    getSelectedFriends(friendsObj, filter) {
-        const allFriendsArray = this.getAllFriendsForHB(friendsObj).items;
+    getSelectedFriends(filter) {
+        const allFriendsArray = this.getAllFriendsForHB().items;
 
         return {
             items: allFriendsArray.filter(item => {
@@ -113,6 +114,7 @@ module.exports = {
             })
         };
     },
-    toggleFriendStatus: (friendsObj, id) => friendsObj[id].selected = !friendsObj[id].selected
-
+    toggleFriendStatus(id) {
+        this.allFriends[id].selected = !this.allFriends[id].selected;
+    }
 };

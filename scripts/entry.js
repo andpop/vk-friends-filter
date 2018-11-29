@@ -2,14 +2,12 @@ let Model = require('./model.js');
 const View = require('./view.js');
 const Controller = require('./controller.js');
 
-//Создаем объект с друзьями, сохраненными в local storage
-let allFriends = Model.loadFriendsFromLocalStorage();
-
-// console.log(Model.allFriends);
+//Создаем объект Model.allFriends с друзьями, сохраненными в local storage
+Model.loadFriendsFromLocalStorage();
 
 (async () => {
-    //Добавляем в объект с друзьями записи о друзьях из ВК
-    await Model.addFriendsFromVK(allFriends);
-    View.displayFriends(allFriends);
-    Controller.addListeners(allFriends);
+    //Добавляем в объект Model.allFriends с друзьями записи о друзьях из ВК
+    await Model.addFriendsFromVK();
+    View.displayFriends();
+    Controller.addListeners();
 })();

@@ -7,18 +7,16 @@ module.exports = {
 
         return renderFn(data);
     },
-    displayUnselectedFriends(allFriends) {
-        const unselectedFriends = Model.getUnselectedFriends(allFriends, htmlElements.unselectedFilter.value.trim());
+    displayUnselectedFriends() {
+        const unselectedFriends = Model.getUnselectedFriends(htmlElements.unselectedFilter.value.trim());
         htmlElements.unselectedList.innerHTML = this.render(htmlElements.templateElement, unselectedFriends);
     },
-    displaySelectedFriends(allFriends) {
-        const selectedFriends = Model.getSelectedFriends(allFriends, htmlElements.selectedFilter.value.trim());
+    displaySelectedFriends() {
+        const selectedFriends = Model.getSelectedFriends(htmlElements.selectedFilter.value.trim());
         htmlElements.selectedList.innerHTML = this.render(htmlElements.templateElement, selectedFriends);
     },
-    displayFriends(allFriends) {
-        this.displayUnselectedFriends(allFriends);
-        this.displaySelectedFriends(allFriends);
+    displayFriends() {
+        this.displayUnselectedFriends();
+        this.displaySelectedFriends();
     }
-
-
 };

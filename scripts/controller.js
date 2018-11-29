@@ -3,7 +3,7 @@ const View = require('./view.js');
 const htmlElements = require('./html-elements.js');
 
 module.exports = {
-    addDrugAndDropListeners(allFriends) {
+    addDrugAndDropListeners() {
         htmlElements.unselectedList.addEventListener('dragstart', e => {
             // Запоминаем id перемещаемого друга
             e.dataTransfer.setData('id', e.target.dataset.friend_id);
@@ -18,34 +18,30 @@ module.exports = {
             // id перемещенного друга
             const id = e.dataTransfer.getData('id');
 
-            Model.toggleFriendStatus(allFriends, id);
-            View.displayFriends(allFriends);
+            Model.toggleFriendStatus(id);
+            View.displayFriends();
         });
     },
     // Переключение статуса друга (выбран/невыбран) при щелчке на значок + или x, потом отрисовка списков
-    toggleStatusHandler(e, allFriends) {
+    toggleStatusHandler(e) {
         if (e.target.tagName === 'IMG') {
             const id = e.target.dataset.friend_id;
 
-            Model.toggleFriendStatus(allFriends, id);
-            View.displayFriends(allFriends);
+            Model.toggleFriendStatus(id);
+            View.displayFriends();
         }
     },
-    addListeners(allFriends) {
-        this.addDrugAndDropListeners(allFriends);
+    addListeners() {
+        this.addDrugAndDropListeners();
         // Переключение статуса друга (выбран/невыбран) при щелчке на значок + или x
-        htmlElements.unselectedList.addEventListener('click', e => {
-            this.toggleStatusHandler(e, allFriends);
-        });
-        htmlElements.selectedList.addEventListener('click', e => {
-            this.toggleStatusHandler(e, allFriends);
-        });
+        htmlElements.unselectedList.addEventListener('click', this.toggleStatusHandler);
+        htmlElements.selectedList.addEventListener('click', this.toggleStatusHandler);
         // Фильтрация соответстующего списка при изменении текста в фильтре
-        htmlElements.unselectedFilter.addEventListener('keyup', () => View.displayUnselectedFriends(allFriends));
-        htmlElements.selectedFilter.addEventListener('keyup', () => View.displaySelectedFriends(allFriends));
+        htmlElements.unselectedFilter.addEventListener('keyup', () => View.displayUnselectedFriends());
+        htmlElements.selectedFilter.addEventListener('keyup', () => View.displaySelectedFriends());
 
         htmlElements.saveButton.addEventListener('click', () => {
-            Model.saveFriendsToLocalStorage(allFriends);
+            Model.saveFriendsToLocalStorage();
         });
         htmlElements.closeButton.addEventListener('click', () => window.close());
         // htmlElements.closeButton.addEventListener('click', () => {
@@ -55,5 +51,4 @@ module.exports = {
         // window.close();
         // });
     }
-
 };

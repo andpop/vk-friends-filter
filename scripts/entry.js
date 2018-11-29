@@ -1,22 +1,15 @@
-const htmlElements = {
-    selectedFilter: document.querySelector('#selected-filter'),
-    unselectedFilter: document.querySelector('#unselected-filter'),
-    selectedContainer: document.querySelector('#selected-container'),
-    selectedList: document.querySelector('#selected-list'),
-    unselectedList: document.querySelector('#unselected-list'),
-    saveButton: document.querySelector('#save'),
-    closeButton: document.querySelector('#close'),
-    templateElement: document.querySelector('#friend-template')
-}
+let Model = require('./model.js');
+const View = require('./view.js');
+const Controller = require('./controller.js');
 
 //Создаем объект с друзьями, сохраненными в local storage
 let allFriends = Model.loadFriendsFromLocalStorage();
 
-Controller.addListeners();
+// console.log(Model.allFriends);
 
 (async () => {
     //Добавляем в объект с друзьями записи о друзьях из ВК
     await Model.addFriendsFromVK(allFriends);
-
-    View.displayFriends();
+    View.displayFriends(allFriends);
+    Controller.addListeners(allFriends);
 })();

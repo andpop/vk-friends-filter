@@ -1,4 +1,7 @@
-window.Model = {
+const isMatching = require('./utils.js');
+
+module.exports = {
+    // allFriends: {},
     loginVK: (appId, permissions) => {
         VK.init({apiId: appId});
 
@@ -25,7 +28,10 @@ window.Model = {
             });
         })
     },
-    loadFriendsFromLocalStorage: () => localStorage.friends ? JSON.parse(localStorage.friends) : {},
+    loadFriendsFromLocalStorage: () => {
+        this.allFriends = localStorage.friends ? JSON.parse(localStorage.friends) : {};
+        return localStorage.friends ? JSON.parse(localStorage.friends) : {}
+    },
     saveFriendsToLocalStorage: (friendsObj) => {
         localStorage.friends = JSON.stringify(friendsObj);
     },
@@ -109,4 +115,4 @@ window.Model = {
     },
     toggleFriendStatus: (friendsObj, id) => friendsObj[id].selected = !friendsObj[id].selected
 
-}
+};

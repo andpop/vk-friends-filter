@@ -2,3 +2,5 @@
 function isMatching(full, chunk) {
     return (new RegExp(chunk, 'i')).test(full);
 }
+
+module.exports = isMatching;

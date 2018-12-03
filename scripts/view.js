@@ -1,5 +1,6 @@
 import htmlElements from './html-elements.js';
 import Model from './model.js';
+import Handlebars from 'handlebars';
 
 export default {
     render(htmlElement, data) { // имя шаблона, данные

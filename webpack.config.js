@@ -10,5 +10,8 @@ module.exports = {
     output: {
         path: PATHS.build,
         filename: '_build.js'
+    },
+    node: {
+        fs: 'empty'
     }
 }

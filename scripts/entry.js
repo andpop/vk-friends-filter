@@ -1,6 +1,7 @@
 import Model from './model.js';
 import View from './view.js';
 import Controller from './controller.js';
+require('handlebars');
 
 //Создаем объект Model.allFriends с друзьями, сохраненными в local storage
 Model.loadFriendsFromLocalStorage();

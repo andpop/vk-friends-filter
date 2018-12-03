@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     selectedFilter: document.querySelector('#selected-filter'),
     unselectedFilter: document.querySelector('#unselected-filter'),
     selectedContainer: document.querySelector('#selected-container'),

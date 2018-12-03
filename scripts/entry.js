@@ -1,6 +1,6 @@
-let Model = require('./model.js');
-const View = require('./view.js');
-const Controller = require('./controller.js');
+import Model from './model.js';
+import View from './view.js';
+import Controller from './controller.js';
 
 //Создаем объект Model.allFriends с друзьями, сохраненными в local storage
 Model.loadFriendsFromLocalStorage();

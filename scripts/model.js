@@ -1,6 +1,6 @@
-const isMatching = require('./utils.js');
+import { isMatching } from './utils.js';
 
-module.exports = {
+export default {
     allFriends: {}, //данные о всех друзьях, загруженных из LocalStorage и добавленных из ВК
     loginVK: (appId, permissions) => {
         VK.init({apiId: appId});

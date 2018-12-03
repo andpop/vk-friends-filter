@@ -1,8 +1,8 @@
-const Model = require('./model.js');
-const View = require('./view.js');
-const htmlElements = require('./html-elements.js');
+import Model from './model.js';
+import View from './view.js';
+import htmlElements from './html-elements.js';
 
-module.exports = {
+export default {
     addDrugAndDropListeners() {
         htmlElements.unselectedList.addEventListener('dragstart', e => {
             // Запоминаем id перемещаемого друга

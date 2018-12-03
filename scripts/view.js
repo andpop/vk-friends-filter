@@ -1,7 +1,7 @@
-const htmlElements = require('./html-elements.js');
-const Model = require('./model.js');
+import htmlElements from './html-elements.js';
+import Model from './model.js';
 
-module.exports = {
+export default {
     render(htmlElement, data) { // имя шаблона, данные
         const renderFn = Handlebars.compile(htmlElement.textContent);
 
